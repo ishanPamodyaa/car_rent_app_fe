@@ -1,0 +1,160 @@
+<!-- HERO SECTION -->
+<!-- <section class="bg-black text-white py-24">
+  <div class="max-w-7xl mx-auto px-6 text-center">
+
+    <h1 class="text-4xl md:text-6xl font-bold mb-6">
+      Drive Your Journey with
+      <span class="text-yellow-400">Vehicle Rent</span>
+    </h1>
+
+    <p class="text-gray-300 text-lg max-w-2xl mx-auto mb-10">
+      Easy, fast, and affordable car rentals. Choose from a wide range of vehicles
+      for business, travel, or daily needs.
+    </p>
+
+    <div class="flex justify-center gap-6">
+      <a
+        routerLink="/sign-up"
+        class="bg-yellow-400 text-black px-8 py-3 rounded-lg font-semibold hover:bg-yellow-300 transition">
+        Get Started
+      </a>
+
+      <a
+        routerLink="/about-us"
+        class="border border-yellow-400 text-yellow-400 px-8 py-3 rounded-lg hover:bg-yellow-400 hover:text-black transition">
+        Learn More
+      </a>
+    </div>
+
+  </div>
+</section> -->
+
+<section class="relative h-[85vh] overflow-hidden bg-black text-white">
+
+  <!-- Slides -->
+  <div
+    *ngFor="let slide of slides; let i = index"
+    class="absolute inset-0 transition-opacity duration-700"
+    [class.opacity-100]="i === currentSlide"
+    [class.opacity-0]="i !== currentSlide"
+  >
+    <img
+      [src]="slide.image"
+      class="w-full h-full object-cover"
+      alt="Vehicle"
+    />
+
+    <!-- Overlay -->
+    <div class="absolute inset-0 bg-black/60 flex items-center">
+      <div class="max-w-7xl mx-auto px-6">
+        <h1 class="text-4xl md:text-6xl font-bold mb-6">
+          {{ slide.title }}
+          <span class="text-yellow-400">{{ slide.highlight }}</span>
+        </h1>
+
+        <p class="text-gray-300 text-lg max-w-xl mb-8">
+          {{ slide.description }}
+        </p>
+
+        <div class="flex gap-4">
+          <a
+            routerLink="/sign-up"
+            class="bg-yellow-400 text-black px-8 py-3 rounded-lg font-semibold hover:bg-yellow-300 transition">
+            Get Started
+          </a>
+
+          <a
+            routerLink="/about-us"
+            class="border border-yellow-400 text-yellow-400 px-8 py-3 rounded-lg hover:bg-yellow-400 hover:text-black transition">
+            Learn More
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Controls -->
+  <button
+    (click)="prev()"
+    class="absolute left-5 top-1/2 -translate-y-1/2 bg-black/50 p-3 rounded-full hover:bg-yellow-400 hover:text-black transition">
+    ‹
+  </button>
+
+  <button
+    (click)="next()"
+    class="absolute right-5 top-1/2 -translate-y-1/2 bg-black/50 p-3 rounded-full hover:bg-yellow-400 hover:text-black transition">
+    ›
+  </button>
+
+</section>
+
+
+<!-- ABOUT / FEATURES -->
+<section class="py-20 bg-gray-100">
+  <div class="max-w-7xl mx-auto px-6">
+
+    <h2 class="text-3xl font-bold text-center mb-14">
+      Why Choose <span class="text-yellow-500">Vehicle Rent</span>
+    </h2>
+
+    <div class="grid md:grid-cols-3 gap-10">
+
+      <div class="bg-white p-8 rounded-xl shadow-md text-center">
+        <h3 class="text-xl font-semibold mb-4">Wide Vehicle Selection</h3>
+        <p class="text-gray-600">
+          Economy, luxury, SUVs, and vans — we have the perfect vehicle for every journey.
+        </p>
+      </div>
+
+      <div class="bg-white p-8 rounded-xl shadow-md text-center">
+        <h3 class="text-xl font-semibold mb-4">Affordable Pricing</h3>
+        <p class="text-gray-600">
+          Transparent pricing with no hidden charges. Best value for your money.
+        </p>
+      </div>
+
+      <div class="bg-white p-8 rounded-xl shadow-md text-center">
+        <h3 class="text-xl font-semibold mb-4">24/7 Support</h3>
+        <p class="text-gray-600">
+          Our support team is always ready to help you anytime, anywhere.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="bg-black text-white py-20">
+  <div class="max-w-7xl mx-auto px-6">
+
+    <h2 class="text-3xl font-bold text-center mb-14">
+      What Our <span class="text-yellow-400">Customers Say</span>
+    </h2>
+
+    <div class="grid md:grid-cols-3 gap-10">
+
+      <div class="bg-gray-900 p-8 rounded-xl">
+        <p class="text-gray-300 mb-6">
+          “Excellent service! Booking was quick and the car was in perfect condition.”
+        </p>
+        <h4 class="font-semibold text-yellow-400">– Kasun Perera</h4>
+      </div>
+
+      <div class="bg-gray-900 p-8 rounded-xl">
+        <p class="text-gray-300 mb-6">
+          “Affordable prices and friendly staff. Highly recommended for long trips.”
+        </p>
+        <h4 class="font-semibold text-yellow-400">– Nimal Fernando</h4>
+      </div>
+
+      <div class="bg-gray-900 p-8 rounded-xl">
+        <p class="text-gray-300 mb-6">
+          “Best car rental experience I’ve had. Very professional and reliable.”
+        </p>
+        <h4 class="font-semibold text-yellow-400">– Sanduni Silva</h4>
+      </div>
+
+    </div>
+  </div>
+</section>
