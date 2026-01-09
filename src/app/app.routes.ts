@@ -8,6 +8,10 @@ import { AdminDashboardComponent } from './pages/admin/admin-dashboard/admin-das
 import { CustomerDashboardComponent } from './pages/customer/customer-dashboard/customer-dashboard.component';
 import { AuthGuard } from './core/guards/auth.guard';
 import { SignUpComponent } from './pages/sign-up/sign-up.component';
+import { PrivacyComponent } from './pages/legal/privacy/privacy.component';
+import { TermsComponent } from './pages/legal/terms/terms.component';
+// Re-importing CookieComponent to force update
+import { CookiesComponent } from './pages/legal/cookie/cookies.component';
 
 export const routes: Routes = [
   {
@@ -21,18 +25,25 @@ export const routes: Routes = [
 
       { path: 'login', component: LoginComponent },
       { path: 'signup', component: SignUpComponent },
+
+      // Legal Pages
+      { path: 'privacy', component: PrivacyComponent },
+      { path: 'terms', component: TermsComponent },
+      { path: 'cookies', component: CookiesComponent },
+
       {
         path: 'admin',
         component: AdminDashboardComponent,
         canActivate: [AuthGuard],
-        data: { role: 'ADMIN' }
+        data: { role: 'ADMIN' },
       },
 
       {
         path: 'customer',
         component: CustomerDashboardComponent,
         canActivate: [AuthGuard],
-        data: { role: 'CUSTOMER' }
-      }
-    ]
-  }];
+        data: { role: 'CUSTOMER' },
+      },
+    ],
+  },
+];
