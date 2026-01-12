@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UserRole } from '../../core/models/user-role.enum';
 import { AuthService } from '../../core/services/auth.service';
 import {  AdminNavbarComponent  } from "../navbar/admin-navbar/admin-navbar.component";
@@ -16,12 +16,17 @@ import { FooterComponent } from '../footer/footer.component';
   templateUrl: './main-layout.component.html',
   styleUrl: './main-layout.component.css',
 })
-export class MainLayoutComponent {
+export class MainLayoutComponent implements OnInit {
 
   roles = UserRole;
-  role: UserRole;
+  role: UserRole = UserRole.GUEST;
 
-  constructor(private auth: AuthService) {
-    this.role = this.auth.getRole();
+  constructor(private auth: AuthService) {}
+
+  ngOnInit(): void {
+    // Subscribe to the role observable to get real-time updates
+    this.auth.role$.subscribe(role => {
+      this.role = role;
+    });
   }
 }

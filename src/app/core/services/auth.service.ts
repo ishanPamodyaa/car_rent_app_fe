@@ -37,15 +37,17 @@ export class AuthService {
   login(loginObj: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/login`, loginObj).pipe(
       tap((res: any) => {
-        // Assuming the response contains token and user object
-        // Adjust based on actual API response structure
-        if(res.userId && res.userRole) {
+        console.log('Login response:', res); // Debug logging
+        // Backend returns: jwt, userid, userRoles
+        if(res.userid && res.userRoles) {
             const user = {
-                id: res.userId,
-                role: res.userRole,
+                id: res.userid,
+                role: res.userRoles,
                 email: loginObj.email
             };
             this.setSession(res.jwt, user);
+        } else {
+            console.error('Invalid response structure:', res);
         }
       })
     );

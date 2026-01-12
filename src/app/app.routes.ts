@@ -11,7 +11,7 @@ import { SignUpComponent } from './pages/sign-up/sign-up.component';
 import { PrivacyComponent } from './pages/legal/privacy/privacy.component';
 import { TermsComponent } from './pages/legal/terms/terms.component';
 // Re-importing CookieComponent to force update
-import { CookiesComponent } from './pages/legal/cookie/cookies.component';
+import { CookieComponent } from './pages/legal/cookie/cookie.component';
 
 export const routes: Routes = [
   {
@@ -29,7 +29,7 @@ export const routes: Routes = [
       // Legal Pages
       { path: 'privacy', component: PrivacyComponent },
       { path: 'terms', component: TermsComponent },
-      { path: 'cookies', component: CookiesComponent },
+      { path: 'cookies', component: CookieComponent },
 
       {
         path: 'admin',

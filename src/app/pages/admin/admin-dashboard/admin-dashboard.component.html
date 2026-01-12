@@ -1,1 +1,209 @@
-<p>admin-dashboard works!</p>
+<!-- Main Container with top padding for navbar -->
+<div class="min-h-screen bg-gray-100 pt-20">
+
+  <!-- Main Content -->
+  <div class="max-w-7xl mx-auto px-6 py-8">
+
+    <!-- Header with Add Car Button -->
+    <div class="flex justify-between items-center mb-8">
+      <div>
+        <h1 class="text-4xl font-bold">
+          <span class="text-black">Admin</span>
+          <span class="text-yellow-500">Dashboard</span>
+        </h1>
+        <p class="text-gray-600 mt-2">Manage your vehicle inventory</p>
+      </div>
+
+      <button
+        (click)="openAddCarForm()"
+        class="bg-yellow-400 text-black px-8 py-3 rounded-lg font-semibold hover:bg-yellow-300 transition transform hover:scale-105 shadow-lg flex items-center gap-2">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+        </svg>
+        Add Car
+      </button>
+    </div>
+
+    <!-- Filter Section -->
+    <app-filter-car (filterChange)="onFilterChange($event)"></app-filter-car>
+
+    <!-- Car Grid -->
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+      <div
+        *ngFor="let car of filteredCars"
+        (click)="onCarClick(car)"
+        class="bg-white rounded-xl shadow-md overflow-hidden cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-2xl">
+
+        <!-- Car Image -->
+        <div class="h-48 overflow-hidden bg-gray-200">
+          <img
+            [src]="car.image"
+            [alt]="car.name"
+            class="w-full h-full object-cover">
+        </div>
+
+        <!-- Car Details -->
+        <div class="p-6">
+          <h3 class="text-xl font-bold mb-2">{{ car.name }}</h3>
+          <p class="text-gray-600 mb-4">{{ car.brand }} • {{ car.modelYear }}</p>
+
+          <div class="grid grid-cols-2 gap-3 mb-4">
+            <div class="flex items-center gap-2 text-sm text-gray-600">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+              </svg>
+              {{ car.fuelType }}
+            </div>
+
+            <div class="flex items-center gap-2 text-sm text-gray-600">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+              </svg>
+              {{ car.transmission }}
+            </div>
+          </div>
+
+          <div class="pt-4 border-t border-gray-200">
+            <div class="flex justify-between items-center">
+              <span class="text-2xl font-bold text-yellow-500">₹{{ car.rentalPrice }}</span>
+              <span class="text-sm text-gray-500">per day</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="filteredCars.length === 0" class="text-center py-20">
+      <div class="text-gray-400 mb-4">
+        <svg class="w-24 h-24 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+      </div>
+      <p class="text-xl text-gray-500">No cars found matching your filters</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- Car Details Modal -->
+<div
+  *ngIf="showCarModal && selectedCar"
+  class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto"
+  (click)="closeCarModal()">
+
+  <div
+    class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl my-8 relative"
+    (click)="$event.stopPropagation()">
+
+    <!-- Close Button -->
+    <button
+      (click)="closeCarModal()"
+      class="absolute top-4 right-4 bg-black/50 text-white p-3 rounded-full hover:bg-black transition z-10">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+      </svg>
+    </button>
+
+    <!-- Car Image -->
+    <div class="h-80 overflow-hidden rounded-t-2xl bg-gray-200">
+      <img
+        [src]="selectedCar.image"
+        [alt]="selectedCar.name"
+        class="w-full h-full object-cover">
+    </div>
+
+    <!-- Car Details -->
+    <div class="p-8">
+
+      <!-- Title -->
+      <div class="mb-6">
+        <h2 class="text-4xl font-bold mb-2">{{ selectedCar.name }}</h2>
+        <p class="text-xl text-gray-600">{{ selectedCar.brand }} • {{ selectedCar.modelYear }}</p>
+      </div>
+
+      <!-- Specs Grid -->
+      <div class="grid md:grid-cols-2 gap-6 mb-6">
+
+        <div class="bg-gray-100 p-4 rounded-lg">
+          <p class="text-sm text-gray-600 mb-1">Color</p>
+          <p class="font-semibold text-lg">{{ selectedCar.color }}</p>
+        </div>
+
+        <div class="bg-gray-100 p-4 rounded-lg">
+          <p class="text-sm text-gray-600 mb-1">Fuel Type</p>
+          <p class="font-semibold text-lg">{{ selectedCar.fuelType }}</p>
+        </div>
+
+        <div class="bg-gray-100 p-4 rounded-lg">
+          <p class="text-sm text-gray-600 mb-1">Transmission</p>
+          <p class="font-semibold text-lg">{{ selectedCar.transmission }}</p>
+        </div>
+
+        <div class="bg-gray-100 p-4 rounded-lg">
+          <p class="text-sm text-gray-600 mb-1">Mileage</p>
+          <p class="font-semibold text-lg">{{ selectedCar.mileage }} km/l</p>
+        </div>
+
+        <div class="bg-gray-100 p-4 rounded-lg">
+          <p class="text-sm text-gray-600 mb-1">Type</p>
+          <p class="font-semibold text-lg">{{ selectedCar.type }}</p>
+        </div>
+
+        <div class="bg-gray-100 p-4 rounded-lg">
+          <p class="text-sm text-gray-600 mb-1">Seats</p>
+          <p class="font-semibold text-lg">{{ selectedCar.seats }} Seats</p>
+        </div>
+
+      </div>
+
+      <!-- Description -->
+      <div class="mb-6" *ngIf="selectedCar.description">
+        <h3 class="font-bold text-lg mb-2">Description</h3>
+        <p class="text-gray-600 leading-relaxed">{{ selectedCar.description }}</p>
+      </div>
+
+      <!-- Price -->
+      <div class="bg-yellow-400 p-6 rounded-lg mb-6">
+        <div class="flex justify-between items-center">
+          <span class="text-black font-semibold">Rental Price</span>
+          <span class="text-3xl font-bold text-black">₹{{ selectedCar.rentalPrice }}/day</span>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex gap-4">
+        <button
+          (click)="openEditCarForm()"
+          class="flex-1 bg-black text-white font-bold py-4 rounded-lg hover:bg-gray-800 transition transform hover:scale-[1.02] shadow-lg flex items-center justify-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+          </svg>
+          Edit Car
+        </button>
+
+        <button
+          (click)="onDeleteCar()"
+          class="flex-1 bg-red-500 text-white font-bold py-4 rounded-lg hover:bg-red-600 transition transform hover:scale-[1.02] shadow-lg flex items-center justify-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+          </svg>
+          Delete Car
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- Add/Edit Car Form -->
+<app-add-car
+  [isOpen]="showAddCarForm"
+  [carData]="isEditMode ? selectedCar : null"
+  (close)="closeAddCarForm()"
+  (save)="onSaveCar($event)">
+</app-add-car>

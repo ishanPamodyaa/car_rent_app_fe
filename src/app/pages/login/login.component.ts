@@ -12,10 +12,9 @@ import { AuthService } from '../../core/services/auth.service';
   styleUrl: './login.component.css',
 })
 export class LoginComponent {
-
   loginObj: any = {
     email: '',
-    password: ''
+    password: '',
   };
 
   constructor(private router: Router, private authService: AuthService) {}
@@ -23,16 +22,20 @@ export class LoginComponent {
   onLogin() {
     this.authService.login(this.loginObj).subscribe({
       next: (res) => {
-        alert("Login Successful!");
-        // Navigation based on role is desirable but simple redirect first
-        this.router.navigate(['/']);
+        //alert("Login Successful!");
+        const role = this.authService.getRole();
+        if (role === 'ADMIN') {
+          this.router.navigate(['/admin']);
+        } else if (role === 'CUSTOMER') {
+          this.router.navigate(['/customer']);
+        } else {
+          this.router.navigate(['/']);
+        }
       },
       error: (err) => {
-        alert("Login Failed: " + (err.error?.message || "Unknown error"));
+        alert('Login Failed: ' + (err.error?.message || 'Unknown error'));
         console.error(err);
-      }
+      },
     });
-
   }
-
 }

@@ -5,9 +5,9 @@ import { CommonModule } from '@angular/common';
   selector: 'app-cookies',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './cookies.component.html',
-  styleUrl: './cookies.component.css'
+  templateUrl: './cookie.component.html',
+  styleUrl: './cookie.component.css'
 })
-export class CookiesComponent {
+export class CookieComponent {
 
 }
