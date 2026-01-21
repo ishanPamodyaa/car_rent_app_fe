@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FilterCar, CarFilter } from '../filter-car/filter-car';
 import { AddCar, Car } from '../add-car/add-car';
+import { AdminService } from '../../../core/services/admin.service';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -10,7 +11,13 @@ import { AddCar, Car } from '../add-car/add-car';
   styleUrl: './admin-dashboard.component.css',
   standalone: true
 })
-export class AdminDashboardComponent {
+export class AdminDashboardComponent implements OnInit {
+
+  constructor(private adminServices: AdminService) { }
+
+  ngOnInit(): void {
+    this.loadCars();
+  }
   // Modal states
   showCarModal = false;
   showAddCarForm = false;
@@ -18,100 +25,116 @@ export class AdminDashboardComponent {
   isEditMode = false;
 
   // Sample car data
-  allCars: Car[] = [
-    {
-      id: 1,
-      name: 'Corolla Altis',
-      brand: 'Toyota',
-      modelYear: 2023,
-      color: 'White',
-      fuelType: 'Petrol',
-      transmission: 'Automatic',
-      mileage: 15.5,
-      type: 'Car',
-      rentalPrice: 5000,
-      seats: 5,
-      description: 'Premium sedan with excellent fuel efficiency and comfortable ride.',
-      image: 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=500&h=300&fit=crop'
-    },
-    {
-      id: 2,
-      name: 'CR-V',
-      brand: 'Honda',
-      modelYear: 2024,
-      color: 'Black',
-      fuelType: 'Hybrid',
-      transmission: 'Automatic',
-      mileage: 18.2,
-      type: 'SUV',
-      rentalPrice: 7500,
-      seats: 7,
-      description: 'Spacious SUV with hybrid technology for better fuel economy.',
-      image: 'https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=500&h=300&fit=crop'
-    },
-    {
-      id: 3,
-      name: 'X5',
-      brand: 'BMW',
-      modelYear: 2023,
-      color: 'Blue',
-      fuelType: 'Diesel',
-      transmission: 'Automatic',
-      mileage: 12.5,
-      type: 'SUV',
-      rentalPrice: 12000,
-      seats: 5,
-      description: 'Luxury SUV with premium features and powerful performance.',
-      image: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=500&h=300&fit=crop'
-    },
-    {
-      id: 4,
-      name: 'E-Class',
-      brand: 'Mercedes-Benz',
-      modelYear: 2024,
-      color: 'Silver',
-      fuelType: 'Petrol',
-      transmission: 'Automatic',
-      mileage: 11.8,
-      type: 'Car',
-      rentalPrice: 15000,
-      seats: 5,
-      description: 'Executive sedan with cutting-edge technology and luxury.',
-      image: 'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=500&h=300&fit=crop'
-    },
-    {
-      id: 5,
-      name: 'i20',
-      brand: 'Hyundai',
-      modelYear: 2023,
-      color: 'Red',
-      fuelType: 'Petrol',
-      transmission: 'Manual',
-      mileage: 20.5,
-      type: 'Car',
-      rentalPrice: 3500,
-      seats: 5,
-      description: 'Compact hatchback perfect for city driving with great mileage.',
-      image: 'https://images.unsplash.com/photo-1542362567-b07e54358753?w=500&h=300&fit=crop'
-    },
-    {
-      id: 6,
-      name: 'Mustang',
-      brand: 'Ford',
-      modelYear: 2023,
-      color: 'Yellow',
-      fuelType: 'Petrol',
-      transmission: 'Automatic',
-      mileage: 10.2,
-      type: 'Car',
-      rentalPrice: 18000,
-      seats: 4,
-      description: 'Iconic sports car with powerful engine and stunning design.',
-      image: 'https://images.unsplash.com/photo-1584345604476-8ec5f5d9d6f8?w=500&h=300&fit=crop'
-    }
-  ];
+  // allCars: Car[] = [
+  //   {
+  //     id: 1,
+  //     name: 'Corolla Altis',
+  //     brand: 'Toyota',
+  //     modelYear: 2023,
+  //     color: 'White',
+  //     fuelType: 'Petrol',
+  //     transmission: 'Automatic',
+  //     mileage: 15.5,
+  //     type: 'Car',
+  //     rentalPrice: 5000,
+  //     seats: 5,
+  //     description: 'Premium sedan with excellent fuel efficiency and comfortable ride.',
+  //     image: 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=500&h=300&fit=crop'
+  //   },
+  //   {
+  //     id: 2,
+  //     name: 'CR-V',
+  //     brand: 'Honda',
+  //     modelYear: 2024,
+  //     color: 'Black',
+  //     fuelType: 'Hybrid',
+  //     transmission: 'Automatic',
+  //     mileage: 18.2,
+  //     type: 'SUV',
+  //     rentalPrice: 7500,
+  //     seats: 7,
+  //     description: 'Spacious SUV with hybrid technology for better fuel economy.',
+  //     image: 'https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=500&h=300&fit=crop'
+  //   },
+  //   {
+  //     id: 3,
+  //     name: 'X5',
+  //     brand: 'BMW',
+  //     modelYear: 2023,
+  //     color: 'Blue',
+  //     fuelType: 'Diesel',
+  //     transmission: 'Automatic',
+  //     mileage: 12.5,
+  //     type: 'SUV',
+  //     rentalPrice: 12000,
+  //     seats: 5,
+  //     description: 'Luxury SUV with premium features and powerful performance.',
+  //     image: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=500&h=300&fit=crop'
+  //   },
+  //   {
+  //     id: 4,
+  //     name: 'E-Class',
+  //     brand: 'Mercedes-Benz',
+  //     modelYear: 2024,
+  //     color: 'Silver',
+  //     fuelType: 'Petrol',
+  //     transmission: 'Automatic',
+  //     mileage: 11.8,
+  //     type: 'Car',
+  //     rentalPrice: 15000,
+  //     seats: 5,
+  //     description: 'Executive sedan with cutting-edge technology and luxury.',
+  //     image: 'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=500&h=300&fit=crop'
+  //   },
+  //   {
+  //     id: 5,
+  //     name: 'i20',
+  //     brand: 'Hyundai',
+  //     modelYear: 2023,
+  //     color: 'Red',
+  //     fuelType: 'Petrol',
+  //     transmission: 'Manual',
+  //     mileage: 20.5,
+  //     type: 'Car',
+  //     rentalPrice: 3500,
+  //     seats: 5,
+  //     description: 'Compact hatchback perfect for city driving with great mileage.',
+  //     image: 'https://images.unsplash.com/photo-1542362567-b07e54358753?w=500&h=300&fit=crop'
+  //   },
+  //   {
+  //     id: 6,
+  //     name: 'Mustang',
+  //     brand: 'Ford',
+  //     modelYear: 2023,
+  //     color: 'Yellow',
+  //     fuelType: 'Petrol',
+  //     transmission: 'Automatic',
+  //     mileage: 10.2,
+  //     type: 'Car',
+  //     rentalPrice: 18000,
+  //     seats: 4,
+  //     description: 'Iconic sports car with powerful engine and stunning design.',
+  //     image: 'https://images.unsplash.com/photo-1584345604476-8ec5f5d9d6f8?w=500&h=300&fit=crop'
+  //   }
+  // ];
+  // filteredCars: Car[] = [...this.allCars];
 
-  filteredCars: Car[] = [...this.allCars];
+  allCars : Car[] = [];
+  filteredCars: Car[] = [];
+
+  loadCars(){
+    this.adminServices.getAllCars().subscribe({
+      next:(cars)=>{
+        this.allCars = cars;
+        this.filteredCars = [...cars];
+        console.log(cars);
+      },
+      error:(err)=>{
+        console.log('Error fetching cars:', err);
+      }
+    });
+  }
+
 
   // Filter handler
   onFilterChange(filter: CarFilter) {
@@ -158,17 +181,8 @@ export class AdminDashboardComponent {
 
   // Save car (add or edit)
   onSaveCar(car: Car) {
-    if (this.isEditMode && this.selectedCar) {
-      // Update existing car
-      const index = this.allCars.findIndex(c => c.id === this.selectedCar!.id);
-      if (index !== -1) {
-        this.allCars[index] = car;
-      }
-    } else {
-      // Add new car
-      this.allCars.push(car);
-    }
-    this.filteredCars = [...this.allCars];
+    // Reload all cars from the database to ensure we have the latest data
+    this.loadCars();
     this.closeAddCarForm();
   }
 
