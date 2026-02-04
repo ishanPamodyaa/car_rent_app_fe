@@ -37,4 +37,12 @@ export class AdminService {
     return this.http.get<Car[]>(`${this.apiUrl}/search`, { params: { q: query } });
   }
 
+  getCarBookings(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/car/booking`);
+  }
+
+  changeBookingStatus(id: number, status: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/car/booking/${id}/${status}`);
+  }
+
 }

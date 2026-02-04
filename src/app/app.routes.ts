@@ -10,8 +10,9 @@ import { AuthGuard } from './core/guards/auth.guard';
 import { SignUpComponent } from './pages/sign-up/sign-up.component';
 import { PrivacyComponent } from './pages/legal/privacy/privacy.component';
 import { TermsComponent } from './pages/legal/terms/terms.component';
-// Re-importing CookieComponent to force update
 import { CookieComponent } from './pages/legal/cookie/cookie.component';
+import { Bookings } from './pages/admin/bookings/bookings';
+import { CustomerBookings } from './pages/customer/customer-bookings/customer-bookings.component';
 
 export const routes: Routes = [
   {
@@ -33,16 +34,22 @@ export const routes: Routes = [
 
       {
         path: 'admin',
-        component: AdminDashboardComponent,
         canActivate: [AuthGuard],
         data: { role: 'ADMIN' },
+        children: [
+          { path: '', component: AdminDashboardComponent },
+          { path: 'bookings', component: Bookings }
+        ]
       },
 
       {
         path: 'customer',
-        component: CustomerDashboardComponent,
         canActivate: [AuthGuard],
         data: { role: 'CUSTOMER' },
+        children: [
+          { path: '', component: CustomerDashboardComponent },
+          { path: 'bookings', component: CustomerBookings }
+        ]
       },
     ],
   },

@@ -1,19 +1,20 @@
 <nav class="fixed top-0 w-full text-white bg-black/60 backdrop-blur-md z-50">
   <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
 
+    <!-- Logo -->
     <div class="text-xl font-bold">
-      <span class="text-yellow-400">CAR</span> RENT
+      <span class="text-yellow-400">CAR</span> RENT • CUSTOMER
     </div>
 
+    <!-- Links -->
     <div class="flex gap-6 text-sm font-medium">
-      <a routerLink="/" class="nav-link">Home</a>
-      <a routerLink="/about-us" class="nav-link">About</a>
-      <a routerLink="/contact-us" class="nav-link">Contact</a>
-      <a routerLink="/customer/dashboard" class="nav-link">My Bookings</a>
+      <a routerLink="/" class="nav-link hover:text-yellow-400 transition">Home</a>
+      <a routerLink="/customer" class="nav-link hover:text-yellow-400 transition">Dashboard</a>
+      <a routerLink="/customer/bookings" class="nav-link hover:text-yellow-400 transition">My Bookings</a>
 
       <button
         (click)="logout()"
-        class="text-yellow-400 hover:text-yellow-300 transition">
+        class="bg-yellow-400 text-black px-4 py-2 rounded-lg hover:bg-yellow-300 transition">
         Logout
       </button>
     </div>

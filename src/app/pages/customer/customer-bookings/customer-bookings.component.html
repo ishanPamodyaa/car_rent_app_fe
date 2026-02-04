@@ -1,0 +1,78 @@
+<div class="min-h-screen bg-gray-50 pt-20">
+  <div class="max-w-7xl mx-auto px-6 py-8">
+    <!-- Header -->
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-gray-900">My Bookings</h1>
+      <p class="text-gray-500 mt-1">Track your car rental history and booking status.</p>
+    </div>
+
+    <!-- Booking List -->
+    <div class="grid gap-6">
+      <div *ngIf="isLoading" class="flex justify-center py-20">
+        <div class="w-10 h-10 border-4 border-yellow-400 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+
+      <div *ngIf="bookings.length === 0 && !isLoading" class="bg-white rounded-2xl p-12 text-center border border-gray-100">
+        <div class="text-gray-300 mb-4">
+          <svg class="w-20 h-20 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+          </svg>
+        </div>
+        <h3 class="text-xl font-bold text-gray-900 mb-2">No Bookings Found</h3>
+        <p class="text-gray-500 mb-6">You haven't booked any vehicles yet.</p>
+        <button routerLink="/customer" class="bg-yellow-400 text-black font-bold px-6 py-3 rounded-xl hover:bg-yellow-300 transition">
+          Find a Car
+        </button>
+      </div>
+
+      <div *ngFor="let booking of bookings"
+        class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col md:flex-row gap-6 items-center hover:shadow-md transition">
+
+        <!-- Booking Info -->
+        <div class="flex-1">
+          <div class="flex items-center gap-3 mb-4">
+            <span [class]="'px-3 py-1 rounded-full text-xs font-bold ' + getStatusClass(booking.bookCarStatus)">
+              {{ booking.bookCarStatus }}
+            </span>
+            <span class="text-xs text-gray-400 font-medium">Ref: #BK-{{ booking.bookId }}</span>
+          </div>
+
+          <h3 class="text-xl font-bold text-gray-900 mb-2">Rental Request</h3>
+
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
+            <div>
+              <p class="text-gray-400 font-medium mb-1 uppercase text-[10px] tracking-wider">From Date</p>
+              <p class="font-bold text-gray-800">{{ booking.fromDate | date:'mediumDate' }}</p>
+            </div>
+            <div>
+              <p class="text-gray-400 font-medium mb-1 uppercase text-[10px] tracking-wider">To Date</p>
+              <p class="font-bold text-gray-800">{{ booking.toDate | date:'mediumDate' }}</p>
+            </div>
+            <div>
+              <p class="text-gray-400 font-medium mb-1 uppercase text-[10px] tracking-wider">Duration</p>
+              <p class="font-bold text-gray-800">{{ booking.days }} Days</p>
+            </div>
+            <div>
+              <p class="text-gray-400 font-medium mb-1 uppercase text-[10px] tracking-wider">Total Amount</p>
+              <p class="font-bold text-yellow-500 transition">LKR {{ booking.amount }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Details/Help Section -->
+        <div class="w-full md:w-auto flex flex-col gap-2 pt-6 md:pt-0 border-t md:border-t-0 md:border-l border-gray-100 md:pl-6">
+            <p class="text-[10px] text-gray-400 text-center uppercase font-bold mb-1">Status Policy</p>
+            <p *ngIf="booking.bookCarStatus === 'PENDING'" class="text-[11px] text-gray-500 leading-tight max-w-[150px] text-center">
+                Your request is being reviewed by the admin.
+            </p>
+            <p *ngIf="booking.bookCarStatus === 'APPROVED'" class="text-[11px] text-green-600 leading-tight max-w-[150px] text-center">
+                Booking confirmed! Please proceed with the payment.
+            </p>
+            <p *ngIf="booking.bookCarStatus === 'REJECTED'" class="text-[11px] text-red-500 leading-tight max-w-[150px] text-center">
+                Unfortunately, this booking was not approved.
+            </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

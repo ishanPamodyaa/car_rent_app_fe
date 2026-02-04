@@ -72,4 +72,9 @@ export class AuthService {
   isLoggedIn(): boolean {
     return this.getRole() !== UserRole.GUEST;
   }
+
+  getCurrentUser(): any {
+    const user = localStorage.getItem('user');
+    return user ? JSON.parse(user) : null;
+  }
 }

@@ -194,4 +194,18 @@ export class AdminDashboardComponent implements OnInit {
       this.closeCarModal();
     }
   }
+
+  showImagePopup = false;
+popupImageUrl: string | null = null;
+
+openImagePopup(imageUrl: string) {
+  this.popupImageUrl = imageUrl;
+  this.showImagePopup = true;
+}
+
+closeImagePopup() {
+  this.showImagePopup = false;
+  this.popupImageUrl = null;
+}
+
 }

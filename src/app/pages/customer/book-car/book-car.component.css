@@ -1,0 +1,34 @@
+/* Styles for BookCar component */
+:host {
+  display: block;
+}
+
+/* Custom animation for modal backdrop */
+.bg-black\/60 {
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Custom animation for modal content */
+.bg-white {
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

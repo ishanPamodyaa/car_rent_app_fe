@@ -1,1 +1,210 @@
-<p>customer-dashboard works!</p>
+<!-- Main Container with top padding for navbar -->
+<div class="min-h-screen bg-gray-100 pt-20">
+
+  <!-- Main Content -->
+  <div class="max-w-7xl mx-auto px-6 py-8">
+
+    <!-- Header -->
+    <div class="mb-8">
+      <h1 class="text-4xl font-bold">
+        <span class="text-black">Available</span>
+        <span class="text-yellow-500">Cars</span>
+      </h1>
+      <p class="text-gray-600 mt-2">Find the perfect car for your next journey</p>
+    </div>
+
+    <!-- Filter Section -->
+    <app-filter-car (filterChange)="onFilterChange($event)"></app-filter-car>
+
+    <!-- Car Grid -->
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+      <div
+        *ngFor="let car of filteredCars"
+        (click)="onCarClick(car)"
+        class="bg-white rounded-xl shadow-md overflow-hidden cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-2xl">
+
+        <!-- Car Image
+        <div class="h-48 overflow-hidden bg-gray-200">
+          <img
+            [src]="car.image"
+            [alt]="car.name"
+            class="w-full h-full object-cover">
+        </div> -->
+        <div class="h-48 overflow-hidden bg-gray-200">
+          <img
+            [src]="car.image"
+            [alt]="car.name"
+            class="w-full h-full object-cover cursor-pointer"
+            (click)="onCarClick(car); $event.stopPropagation()">
+        </div>
+
+        <!-- Car Details -->
+        <div class="p-6">
+          <div class="flex justify-between items-start mb-2">
+            <h3 class="text-xl font-bold">{{ car.name }}</h3>
+            <span class="px-2 py-1 bg-gray-100 text-xs font-semibold rounded text-gray-600">{{ car.type }}</span>
+          </div>
+          <p class="text-gray-600 mb-4">{{ car.brand }} • {{ car.modelYear }}</p>
+
+          <div class="grid grid-cols-2 gap-3 mb-4">
+            <div class="flex items-center gap-2 text-sm text-gray-600">
+              <svg class="w-4 h-4 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+              </svg>
+              {{ car.fuelType }}
+            </div>
+
+            <div class="flex items-center gap-2 text-sm text-gray-600">
+              <svg class="w-4 h-4 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+              </svg>
+              {{ car.transmission }}
+            </div>
+          </div>
+
+          <div class="pt-4 border-t border-gray-200">
+            <div class="flex justify-between items-center">
+              <div>
+                <span class="text-2xl font-bold text-yellow-500">LKR {{ car.rentalPrice }}</span>
+                <span class="text-sm text-gray-500 ml-1">/day</span>
+              </div>
+              <button class="bg-black text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-gray-800 transition">View Details</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="filteredCars.length === 0" class="text-center py-20">
+      <div class="text-gray-400 mb-4">
+        <svg class="w-24 h-24 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+      </div>
+      <p class="text-xl text-gray-500">No cars found matching your criteria</p>
+      <button (click)="loadCars()" class="mt-4 text-yellow-500 font-semibold hover:underline">Clear all filters</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- Car Details Modal -->
+<div *ngIf="showCarModal && selectedCar"
+  class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex justify-center p-4 overflow-y-auto"
+  (click)="closeCarModal()">
+
+  <div class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl my-8 relative max-h-[90vh] overflow-y-auto"
+  (click)="$event.stopPropagation()">
+
+    <!-- Close Button -->
+    <button
+      (click)="closeCarModal()"
+      class="absolute top-4 right-4 bg-black/50 text-white p-3 rounded-full hover:bg-black transition z-10">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+      </svg>
+    </button>
+
+     <!-- Car Image -->
+     <div class="h-64 md:h-80 overflow-hidden rounded-t-2xl bg-gray-200 cursor-zoom-in"
+     (click)="openImagePopup(selectedCar.image); $event.stopPropagation()">
+
+     <img [src]="selectedCar.image" [alt]="selectedCar.name"
+       class="w-full h-full object-cover transition-transform duration-500 ease-out hover:scale-110">
+   </div>
+
+        <!-- Full Image Popup -->
+        <div *ngIf="showImagePopup && popupImageUrl"
+        class="fixed inset-0 bg-black/90 z-[60] flex items-center justify-center" (click)="closeImagePopup()">
+
+        <!-- Close Button -->
+        <button class="absolute top-6 right-6 text-white bg-black/60 p-3 rounded-full hover:bg-black transition z-10"
+          (click)="closeImagePopup()">
+          ✕
+        </button>
+
+        <!-- Full Image -->
+        <img [src]="popupImageUrl" class="max-w-[95vw] max-h-[95vh] object-contain rounded-lg shadow-2xl"
+          (click)="$event.stopPropagation()">
+      </div>
+
+    <!-- Car Details -->
+    <div class="p-8">
+
+      <!-- Title -->
+      <div class="flex justify-between items-center mb-6">
+        <div>
+          <h2 class="text-4xl font-bold mb-2">{{ selectedCar.name }}</h2>
+          <p class="text-xl text-gray-600">{{ selectedCar.brand }} • {{ selectedCar.modelYear }}</p>
+        </div>
+        <div class="text-right">
+          <p class="text-sm text-gray-500">Daily Rate</p>
+          <p class="text-3xl font-bold text-yellow-500">LKR {{ selectedCar.rentalPrice }}</p>
+        </div>
+      </div>
+
+      <!-- Specs Grid -->
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
+        <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
+          <p class="text-xs text-gray-500 uppercase font-bold mb-1">Color</p>
+          <p class="font-bold flex items-center gap-2">
+            <span class="w-3 h-3 rounded-full border border-gray-300" [style.background-color]="selectedCar.color"></span>
+            {{ selectedCar.color }}
+          </p>
+        </div>
+        <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
+          <p class="text-xs text-gray-500 uppercase font-bold mb-1">Fuel</p>
+          <p class="font-bold">{{ selectedCar.fuelType }}</p>
+        </div>
+        <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
+          <p class="text-xs text-gray-500 uppercase font-bold mb-1">Transmission</p>
+          <p class="font-bold">{{ selectedCar.transmission }}</p>
+        </div>
+        <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
+          <p class="text-xs text-gray-500 uppercase font-bold mb-1">Mileage</p>
+          <p class="font-bold">{{ selectedCar.mileage }} km/l</p>
+        </div>
+        <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
+          <p class="text-xs text-gray-500 uppercase font-bold mb-1">Seats</p>
+          <p class="font-bold">{{ selectedCar.seats }} Person</p>
+        </div>
+        <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
+          <p class="text-xs text-gray-500 uppercase font-bold mb-1">Type</p>
+          <p class="font-bold">{{ selectedCar.type }}</p>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="mb-8">
+        <h3 class="font-bold text-lg mb-2">About this vehicle</h3>
+        <p class="text-gray-600 leading-relaxed">{{ selectedCar.description || 'No description available for this vehicle.' }}</p>
+      </div>
+
+      <!-- Action Button -->
+      <button
+        (click)="openBookingModal()"
+        class="w-full bg-yellow-400 text-black font-bold py-4 rounded-xl hover:bg-yellow-300 transition transform hover:scale-[1.01] shadow-xl flex items-center justify-center gap-3">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+        </svg>
+        Continue to Booking
+      </button>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- Booking Modal Placeholder -->
+<!-- We will implement app-book-car component next -->
+<app-book-car
+  *ngIf="showBookingModal && selectedCar"
+  [isOpen]="showBookingModal"
+  [car]="selectedCar"
+  (close)="closeBookingModal()"
+  (success)="onBookingSuccess()">
+</app-book-car>
